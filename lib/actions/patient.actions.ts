@@ -1,13 +1,18 @@
 "use server";
 
-import { DATABASE_ID, databases, ENDPOINT, PATIENT_COLLECTION_ID, PROJECT_ID } from './../appwrite.config';
+
 let Query: typeof import('node-appwrite').Query;
 let users: typeof import('../appwrite.config').users;
 let ID: typeof import ('node-appwrite').ID
 let InputFile: typeof import ('node-appwrite').InputFile;
 let storage: typeof import ('../appwrite.config').storage;
-let BUCKET_ID: typeof import ('../appwrite.config').BUCKET_ID;
 let databses: typeof import ('../appwrite.config').databases;
+let BUCKET_ID: typeof import ('../appwrite.config').BUCKET_ID;
+let DATABASE_ID: typeof import ('../appwrite.config').DATABASE_ID;
+let ENDPOINT: typeof import ('../appwrite.config').ENDPOINT;
+let PATIENT_COLLECTION_ID: typeof import ('../appwrite.config').PATIENT_COLLECTION_ID;
+let PROJECT_ID: typeof import ('../appwrite.config').PROJECT_ID;
+
 import { parseStringify } from '../utils';
 
 
@@ -19,9 +24,14 @@ if (typeof window === 'undefined') {
   users = appwriteConfig.users;
   ID = appwrite.ID
   InputFile = appwrite.InputFile
+  databses = appwrite.databases
   storage = appwrite.storage
   BUCKET_ID = appwrite.BUCKET_ID
-  databses = appwrite.databases
+  DATABASE_ID = appwrite.DATABASE_ID
+  ENDPOINT = appwrite.ENDPOINT
+  PATIENT_COLLECTION_ID = appwrite.PATIENT_COLLECTION_ID
+  PROJECT_ID = appwrite.PROJECT_ID
+  
 }
 
 
