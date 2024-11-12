@@ -27,7 +27,7 @@ interface CustomProps {
     name: string,
     label?: string,
     placeholder?: string,
-    iconSrc: string,
+    iconSrc?: string,
     iconAlt?: string,
     disabled?: boolean,
     dateFormat?: string,

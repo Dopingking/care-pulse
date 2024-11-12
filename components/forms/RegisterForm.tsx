@@ -10,7 +10,7 @@ import SubmitButton from "../SubmitButton"
 import { useState } from "react"
 import { PatientFormValidation, UserFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { createUser } from "@/lib/actions/patient.actions"
+import { createUser, registerPatient } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constants"
@@ -40,7 +40,7 @@ const RegisterForm =({user}: { user: User}) => {
   async function onSubmit(values: z.infer<typeof PatientFormValidation>) {
     setIsLoading(true);
 
-    let fromData;
+    let formData;
 
     if(values.identificationDocument && values.identificationDocument.length > 0){
         const blobFile = new Blob([values.identificationDocument[0]],{
@@ -54,8 +54,16 @@ const RegisterForm =({user}: { user: User}) => {
 
     try {
           const patientData ={
-            
+            ...values,
+            userId: user.$id,
+            birthDate: new Date(values.birthDate),
+            identificationDocument: formData,
           }
+
+          //  @ts-ignore
+          const patient = await registerPatient(patientData);
+
+          if(patient)  router.push(`/patients/${user.$id}/new-appointment`)
     } catch (error) {
       console.log(error);
     }
@@ -186,14 +194,14 @@ const RegisterForm =({user}: { user: User}) => {
               label="Primary Physician"
               placeholder="Select a physician"
             >
-              {Doctors.map((doctor) =>(
-                <SelectItem key={doctor.name} value={doctor.name}>
+              {Doctors.map((doctor, i) =>(
+                <SelectItem key={doctor.name + i} value={doctor.name}>
                     <div className="flex cursor-pointer items-center gap-2">
                         <Image 
                           src={doctor.image}
                           width={32}
                           height={32}
-                          alt={doctor.name}
+                          alt="doctor"
                           className="rounded-full border border-dark-500"
                         />
                         <p>{doctor.name}</p>
