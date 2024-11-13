@@ -6,7 +6,7 @@ let users: typeof import('../appwrite.config').users;
 let ID: typeof import ('node-appwrite').ID
 let InputFile: typeof import ('node-appwrite').InputFile;
 let storage: typeof import ('../appwrite.config').storage;
-let databses: typeof import ('../appwrite.config').databases;
+let databases: typeof import ('../appwrite.config').databases;
 let BUCKET_ID: typeof import ('../appwrite.config').BUCKET_ID;
 let DATABASE_ID: typeof import ('../appwrite.config').DATABASE_ID;
 let ENDPOINT: typeof import ('../appwrite.config').ENDPOINT;
@@ -24,7 +24,7 @@ if (typeof window === 'undefined') {
   users = appwriteConfig.users;
   ID = appwrite.ID
   InputFile = appwrite.InputFile
-  databses = appwrite.databases
+  databases = appwrite.databases
   storage = appwrite.storage
   BUCKET_ID = appwrite.BUCKET_ID
   DATABASE_ID = appwrite.DATABASE_ID
@@ -82,6 +82,16 @@ export const registerPatient = async ({identificationDocument, ...patient}: Regi
 
       file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile)
     }
+
+
+    console.log(
+
+      {
+        identificationDocumentId: file?.$id || null,
+        identificationDocumentUrl: `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file?.$id}/view?project=${PROJECT_ID}`,
+        ...patient
+      }
+    )
 
     const newPatient = await databases.createDocument(
       DATABASE_ID!,
